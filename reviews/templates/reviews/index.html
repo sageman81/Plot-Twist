@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Review Index{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Reviews Index</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+    <ul>
+        {% for review in reviews %}
+            <li>{{ review.movie }} - {{ review.review }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

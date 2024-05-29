@@ -127,3 +127,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# URL to redirect to after login (String, pattern name or callable)
+LOGIN_REDIRECT_URL = 'reviews:index'  # Assuming 'index' is a named URL pattern in 'reviews' app
+
+# URL to redirect to after logout (String, pattern name or callable)
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to login page after logout

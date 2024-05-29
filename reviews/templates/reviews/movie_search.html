@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search for a Movie</h2>
+<form method="get" action="{% url 'reviews:movie_search' %}">
+    <input type="text" name="query" placeholder="Enter movie title">
+    <button type="submit">Search</button>
+</form>
+
+{% if movie_data %}
+    <h3>Results:</h3>
+    <ul>
+        {% for movie in movie_data.results %}
+            <li>
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                {{ movie.title }} - Released: {{ movie.release_date }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found</p>
+{% endif %}
+{% endblock %}
