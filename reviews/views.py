@@ -64,3 +64,20 @@ def movie_search(request):
     query = request.GET.get('query', '')
     movie_data = get_movie_data(query) if query else None
     return render(request, 'reviews/movie_search.html', {'movie_data': movie_data})
+
+def get_top_rated_movies():
+    api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
+    url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={api_key}"
+    response = requests.get(url)
+    print("API Response Status:", response.status_code)  # Debugging
+    if response.status_code == 200:
+        return response.json()['results']
+    else:
+        print("Failed to fetch top-rated movies:", response.text)  # Debugging
+        return None
+
+
+
+def home(request):
+    top_rated_movies = get_top_rated_movies()
+    return render(request, 'home.html', {'top_rated_movies': top_rated_movies})

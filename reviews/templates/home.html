@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Top Rated Movies</h1>
+{% if top_rated_movies %}
+  <ul>
+    {% for movie in top_rated_movies %}
+      <li>
+        <h2>{{ movie.title }}</h2>
+        <p>Released on: {{ movie.release_date }}</p>
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No top rated movies found.</p>
+{% endif %}
+{% endblock %}
