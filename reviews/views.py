@@ -1,9 +1,9 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .models import Review, PlotTwist  # Import PlotTwist if I plan to use it
-from .forms import ReviewForm, PlotTwistForm
+from .forms import ReviewForm, PlotTwistForm, SignUpForm
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout, authenticate
 import requests     #TMDB API
 from django.contrib.auth.models import User   #posting plot twists
 
@@ -77,7 +77,17 @@ def get_top_rated_movies():
         return None
 
 
-
 def home(request):
     top_rated_movies = get_top_rated_movies()
     return render(request, 'home.html', {'top_rated_movies': top_rated_movies})
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in immediately after signing up
+            return redirect('home')  # Redirect to a desired page
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/sign_up_form.html', {'form': form})
