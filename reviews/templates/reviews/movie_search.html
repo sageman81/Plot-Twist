@@ -12,10 +12,12 @@
     <ul>
         {% for movie in movie_data.results %}
             <li>
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                <strong>{{ movie.title }}</strong> - Released: {{ movie.release_date }}
-                <p>{{ movie.overview }}</p>
-                <a href="{% url 'reviews:movie_detail' movie.id %}">More Details</a>
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                    {% if movie.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    {% endif %}
+                    {{ movie.title }} - Released: {{ movie.release_date }}
+                </a>
             </li>
         {% endfor %}
     </ul>

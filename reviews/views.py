@@ -42,10 +42,16 @@ def get_movie_data(title):
         return None
 
 
-def movie_detail(request, movie_id):        #API TMDB fetch
-    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key=YOUR_API_KEY')
+def movie_detail(request, movie_id):
+    api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
+    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}')
     movie = response.json() if response.status_code == 200 else None
-    return render(request, 'movie_detail.html', {'movie': movie})
+    if movie:
+        return render(request, 'movie_detail.html', {'movie': movie})
+    else:
+        messages.error(request, 'Movie not found')
+        return redirect('reviews:movie_search')
+
 
 def submit_plot_twist(request, movie_id):
     if request.method == 'POST':
