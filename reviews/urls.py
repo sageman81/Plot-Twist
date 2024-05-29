@@ -8,5 +8,6 @@ urlpatterns = [
     path('', views.index, name='index'),  # Accessible via /reviews/
     path('<int:review_id>/', views.detail, name='detail'),  # Accessible via /reviews/1, /reviews/2, etc.
     path('search/', movie_search, name='movie_search'),
+    path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),
 ]
 

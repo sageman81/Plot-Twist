@@ -63,7 +63,18 @@ def submit_plot_twist(request, movie_id):
 def movie_search(request):
     query = request.GET.get('query', '')
     movie_data = get_movie_data(query) if query else None
+    popular_movies = get_popular_movies() if not query else None  
     return render(request, 'reviews/movie_search.html', {'movie_data': movie_data})
+
+
+def get_popular_movies():
+    api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()['results']
+    else:
+        return None
 
 def get_top_rated_movies():
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'

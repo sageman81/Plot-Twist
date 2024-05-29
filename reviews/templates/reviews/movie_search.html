@@ -12,12 +12,27 @@
     <ul>
         {% for movie in movie_data.results %}
             <li>
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                {{ movie.title }} - Released: {{ movie.release_date }}
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                <strong>{{ movie.title }}</strong> - Released: {{ movie.release_date }}
+                <p>{{ movie.overview }}</p>
+                <a href="{% url 'reviews:movie_detail' movie.id %}">More Details</a>
             </li>
         {% endfor %}
     </ul>
-{% else %}
-    <p>No results found</p>
+{% endif %}
+
+{% if popular_movies %}
+    <h3>Popular Movies:</h3>
+    <ul>
+        {% for movie in popular_movies %}
+            <li>
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                <strong>{{ movie.title }}</strong> - Released: {{ movie.release_date }}
+                <p>{{ movie.overview }}</p>
+                <a href="{% url 'reviews:movie_detail' movie.id %}">More Details</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}
 {% endblock %}
+
