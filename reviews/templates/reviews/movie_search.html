@@ -5,34 +5,27 @@
 <form method="get" action="{% url 'reviews:movie_search' %}">
     <input type="text" name="query" placeholder="Enter movie title">
     <button type="submit">Search</button>
+    <a href="{% url 'reviews:random_movie' %}">Surprise Me!</a>
+
 </form>
 
 {% if movie_data %}
     <h3>Results:</h3>
     <ul>
         {% for movie in movie_data.results %}
-            <li>
-                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
-                    {% if movie.poster_path %}
-                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                    {% endif %}
-                    {{ movie.title }} - Released: {{ movie.release_date }}
-                </a>
-            </li>
+            <li><a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                {{ movie.title }}</a></li>
         {% endfor %}
     </ul>
-{% endif %}
-
-{% if popular_movies %}
+{% elif popular_movies %}
     <h3>Popular Movies:</h3>
     <ul>
         {% for movie in popular_movies %}
             <li>
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-                <strong>{{ movie.title }}</strong> - Released: {{ movie.release_date }}
-                <p>{{ movie.overview }}</p>
-                <a href="{% url 'reviews:movie_detail' movie.id %}">More Details</a>
-            </li>
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                {{ movie.title }}</a></li>
         {% endfor %}
     </ul>
 {% endif %}

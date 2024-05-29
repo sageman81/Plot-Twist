@@ -5,7 +5,8 @@ from .forms import ReviewForm, PlotTwistForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 import requests     #TMDB API
-from django.contrib.auth.models import User   #posting plot twists
+from django.contrib.auth.models import User   #posting plot twist
+import random
 
 
 def index(request):
@@ -66,11 +67,26 @@ def submit_plot_twist(request, movie_id):
         form = PlotTwistForm()
     return render(request, 'submit_plot_twist.html', {'form': form})
 
+# def movie_search(request):
+#     query = request.GET.get('query', '')
+#     movie_data = get_movie_data(query) if query else None
+#     popular_movies = get_popular_movies() if not query else None  
+#     return render(request, 'reviews/movie_search.html', {'movie_data': movie_data})
+
 def movie_search(request):
+    popular_movies = None
+    if not request.GET.get('query'):
+        # Fetch popular movies if no search query is provided
+        response = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
+        if response.status_code == 200:
+            popular_movies = response.json()['results']
+
     query = request.GET.get('query', '')
     movie_data = get_movie_data(query) if query else None
-    popular_movies = get_popular_movies() if not query else None  
-    return render(request, 'reviews/movie_search.html', {'movie_data': movie_data})
+    return render(request, 'reviews/movie_search.html', {
+        'movie_data': movie_data,
+        'popular_movies': popular_movies
+    })
 
 
 def get_popular_movies():
@@ -108,3 +124,16 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'registration/sign_up_form.html', {'form': form})
+
+
+def random_movie(request):
+    api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
+    url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        movies = response.json()['results']
+        movie = random.choice(movies)
+        return redirect('reviews:movie_detail', movie_id=movie['id'])
+    else:
+        messages.error(request, "Failed to fetch movies")
+        return redirect('reviews:movie_search')
