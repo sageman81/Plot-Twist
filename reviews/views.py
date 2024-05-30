@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Review, PlotTwist  # Import PlotTwist if I plan to use it
 from .forms import ReviewForm, PlotTwistForm, SignUpForm
 from django.contrib import messages
@@ -42,13 +42,18 @@ def get_movie_data(title):
     else:
         return None
 
-
 def movie_detail(request, movie_id):
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
-    response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}')
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}'
+    response = requests.get(url)
     movie = response.json() if response.status_code == 200 else None
+
     if movie:
-        return render(request, 'movie_detail.html', {'movie': movie})
+        plot_twists = PlotTwist.objects.filter(movie_id=movie_id).order_by('-votes')
+        return render(request, 'movie_detail.html', {
+            'movie': movie,
+            'plot_twists': plot_twists
+        })
     else:
         messages.error(request, 'Movie not found')
         return redirect('reviews:movie_search')
@@ -109,10 +114,15 @@ def get_top_rated_movies():
         print("Failed to fetch top-rated movies:", response.text)  # Debugging
         return None
 
-
 def home(request):
     top_rated_movies = get_top_rated_movies()
-    return render(request, 'home.html', {'top_rated_movies': top_rated_movies})
+    top_plot_twists = PlotTwist.objects.order_by('-votes')[:5]  # Top 5 plot twists
+    return render(request, 'home.html', {
+        'top_rated_movies': top_rated_movies,
+        'top_plot_twists': top_plot_twists
+    })
+
+
 
 def signup(request):
     if request.method == 'POST':
@@ -137,3 +147,18 @@ def random_movie(request):
     else:
         messages.error(request, "Failed to fetch movies")
         return redirect('reviews:movie_search')
+
+
+def upvote_plot_twist(request, plot_twist_id):
+    if request.method == 'POST':
+        plot_twist = PlotTwist.objects.get(id=plot_twist_id)
+        plot_twist.votes += 1
+        plot_twist.save()
+        return JsonResponse({'votes': plot_twist.votes})
+
+def downvote_plot_twist(request, plot_twist_id):
+    if request.method == 'POST':
+        plot_twist = PlotTwist.objects.get(id=plot_twist_id)
+        plot_twist.votes -= 1
+        plot_twist.save()
+        return JsonResponse({'votes': plot_twist.votes})

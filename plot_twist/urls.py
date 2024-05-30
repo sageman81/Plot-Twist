@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from reviews.views import home, signup
-
+from reviews.views import upvote_plot_twist, downvote_plot_twist
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +25,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', home, name='home'),
     path('signup/', signup, name='signup'),
+    path('plot_twist/<int:plot_twist_id>/upvote/', upvote_plot_twist, name='upvote_plot_twist'),
+    path('plot_twist/<int:plot_twist_id>/downvote/', downvote_plot_twist, name='downvote_plot_twist'),
 ]
 

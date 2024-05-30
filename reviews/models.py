@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 
 
 class PlotTwist(models.Model):
+    movie_id = models.IntegerField()  # Assuming movie_id is stored directly
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    votes = models.IntegerField(default=0)  # Store net upvotes - downvotes
     created_at = models.DateTimeField(auto_now_add=True)
 
 

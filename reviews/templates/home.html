@@ -15,4 +15,17 @@
 {% else %}
   <p>No top rated movies found.</p>
 {% endif %}
-{% endblock %}
+
+<h2>Top Plot Twists</h2>
+{% if top_plot_twists %}
+  <ul>
+    {% for twist in top_plot_twists %}
+      <li>
+        <p>{{ twist.description }} ({{ twist.votes }} votes)</p>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No plot twists have been submitted yet.</p>
+{% endif %}
+{% endblock %} 
