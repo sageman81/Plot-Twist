@@ -2,24 +2,27 @@
 
 {% block content %}
     <h1>{{ movie.title }}</h1>
-    {% if movie.poster_path %}
-        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" style="width:100%;max-width:300px;">
-    {% else %}
-        <p>No image available.</p>
-    {% endif %}
+    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
     <p><strong>Overview:</strong> {{ movie.overview }}</p>
     <p><a href="{% url 'reviews:movie_search' %}">Back to Search</a></p>
+
+    <h2>Submit a Plot Twist</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Plot Twist</button>
+    </form>
 
     <h2>Plot Twists</h2>
     {% for plot_twist in plot_twists %}
         <div>
             <p>{{ plot_twist.description }} - Votes: {{ plot_twist.votes }}</p>
-            <a href="{% url 'reviews:upvote_plot_twist' plot_twist.id %}">Upvote</a>
-            <a href="{% url 'reviews:downvote_plot_twist' plot_twist.id %}">Downvote</a>
+            <a href="{% url 'upvote_plot_twist' plot_twist.id %}">Upvote</a>
+            <a href="{% url 'downvote_plot_twist' plot_twist.id %}">Downvote</a>
         </div>
     {% empty %}
-        <p>No plot twists found for this movie.</p>
+        <p>No plot twists have been submitted yet.</p>
     {% endfor %}
 {% endblock %}
 
