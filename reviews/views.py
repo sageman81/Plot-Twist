@@ -1,5 +1,7 @@
-from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render, get_object_or_404
+from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
+
+from django.contrib.auth.decorators import login_required
 from .models import Review, PlotTwist  # Import PlotTwist if I plan to use it
 from .forms import ReviewForm, PlotTwistForm, SignUpForm
 from django.contrib import messages
@@ -77,7 +79,7 @@ def movie_detail(request, movie_id):
             plot_twist.movie_id = movie_id
             plot_twist.user = request.user
             plot_twist.save()
-            return redirect('movie_detail', movie_id=movie_id)
+            return redirect('reviews:movie_detail', movie_id=movie_id)
 
     return render(request, 'movie_detail.html', {'movie': movie, 'plot_twists': plot_twists, 'form': form})
 
@@ -170,12 +172,19 @@ def random_movie(request):
         return redirect('reviews:movie_search')
 
 
+
+
+
 def upvote_plot_twist(request, plot_twist_id):
     if request.method == 'POST':
-        plot_twist = PlotTwist.objects.get(id=plot_twist_id)
+        plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
         plot_twist.votes += 1
         plot_twist.save()
-        return JsonResponse({'votes': plot_twist.votes})
+        print("Vote incremented:", plot_twist.votes)  # Add this to debug
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        return redirect('/')  # Redirect somewhere sensible if not POST
+
 
 def downvote_plot_twist(request, plot_twist_id):
     if request.method == 'POST':
@@ -183,3 +192,45 @@ def downvote_plot_twist(request, plot_twist_id):
         plot_twist.votes -= 1
         plot_twist.save()
         return JsonResponse({'votes': plot_twist.votes})
+    else:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
+
+
+def edit_plot_twist(request, plot_twist_id, movie_id):
+    plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
+
+    if request.user == plot_twist.user or request.user.is_superuser:
+        if request.method == 'POST':
+            form = PlotTwistForm(request.POST, instance=plot_twist)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Plot twist updated successfully.")
+                return redirect('reviews:movie_detail', movie_id=movie_id)
+        else:
+            form = PlotTwistForm(instance=plot_twist)
+    else:
+        messages.error(request, "You do not have permission to edit this plot twist.")
+        return redirect('reviews:movie_detail', movie_id=movie_id)
+
+    return render(request, 'edit_plot_twist.html', {'form': form, 'plot_twist': plot_twist})
+
+
+
+def delete_plot_twist(request, plot_twist_id, movie_id):
+    plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
+
+    if request.user == plot_twist.user or request.user.is_superuser:
+        if request.method == 'POST':
+            plot_twist.delete()
+            messages.success(request, "Plot twist deleted successfully.")
+            return redirect('reviews:movie_detail', movie_id=movie_id)
+    else:
+        messages.error(request, "You do not have permission to delete this plot twist.")
+
+    return redirect('reviews:movie_detail', movie_id=movie_id)
+
+
+
+
+
