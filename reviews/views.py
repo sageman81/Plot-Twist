@@ -44,21 +44,6 @@ def get_movie_data(title):
     else:
         return None
 
-# def movie_detail(request, movie_id):
-#     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
-#     url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}'
-#     response = requests.get(url)
-#     movie = response.json() if response.status_code == 200 else None
-
-#     if movie:
-#         plot_twists = PlotTwist.objects.filter(movie_id=movie_id).order_by('-votes')
-#         return render(request, 'movie_detail.html', {
-#             'movie': movie,
-#             'plot_twists': plot_twists
-#         })
-#     else:
-#         messages.error(request, 'Movie not found')
-#         return redirect('reviews:movie_search')
 
 def movie_detail(request, movie_id):
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
@@ -104,7 +89,7 @@ def submit_plot_twist(request, movie_id):
 def movie_search(request):
     popular_movies = None
     if not request.GET.get('query'):
-        # Fetch popular movies if no search query is provided
+        # Fetch popular movies 
         response = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
         if response.status_code == 200:
             popular_movies = response.json()['results']
@@ -139,7 +124,7 @@ def get_top_rated_movies():
 
 def home(request):
     top_rated_movies = get_top_rated_movies()
-    top_plot_twists = PlotTwist.objects.order_by('-votes')[:5]  # Top 5 plot twists
+    top_plot_twists = PlotTwist.objects.order_by('-votes')[:5]  # Top 5 plot twists, add more later
     return render(request, 'home.html', {
         'top_rated_movies': top_rated_movies,
         'top_plot_twists': top_plot_twists
@@ -152,8 +137,8 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log the user in immediately after signing up
-            return redirect('home')  # Redirect to a desired page
+            login(request, user)  # Logs user in immediately 
+            return redirect('home')  
     else:
         form = SignUpForm()
     return render(request, 'registration/sign_up_form.html', {'form': form})
@@ -180,10 +165,10 @@ def upvote_plot_twist(request, plot_twist_id):
         plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
         plot_twist.votes += 1
         plot_twist.save()
-        print("Vote incremented:", plot_twist.votes)  # Add this to debug
+        print("Vote incremented:", plot_twist.votes)  # Debugging
         return redirect(request.META.get('HTTP_REFERER', '/'))
     else:
-        return redirect('/')  # Redirect somewhere sensible if not POST
+        return redirect('/') 
 
 
 def downvote_plot_twist(request, plot_twist_id):

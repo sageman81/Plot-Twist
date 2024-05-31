@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Plot Twist</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>There were errors in your form:</strong>
+            {{ form.errors }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
