@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from . import views
 from .views import movie_search, index, detail, random_movie 
 
@@ -10,5 +10,6 @@ urlpatterns = [
     path('search/', movie_search, name='movie_search'),
     path('movie/<int:movie_id>/', views.movie_detail, name='movie_detail'),
     path('random/', random_movie, name='random_movie'), 
+   
 ]
 

@@ -17,11 +17,11 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from reviews.views import home, signup
-from reviews.views import upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist
+from reviews.views import upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('reviews/', include('reviews.urls')),
+    path('reviews/', include('reviews.urls', namespace='reviews')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', home, name='home'),
     path('signup/', signup, name='signup'),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('plot_twist/<int:plot_twist_id>/downvote/', downvote_plot_twist, name='downvote_plot_twist'),
     path('plot_twist/<int:movie_id>/<int:plot_twist_id>/edit/', edit_plot_twist, name='edit_plot_twist'),
     path('plot_twist/<int:movie_id>/<int:plot_twist_id>/delete/', delete_plot_twist, name='delete_plot_twist'),
+    path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),
 
 ]
 

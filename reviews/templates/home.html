@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Top Rated Movies</h1>
-{% if top_rated_movies %}
-  <ul>
-    {% for movie in top_rated_movies %}
-      <li>
-        <h2>{{ movie.title }}</h2>
-        <p>Released on: {{ movie.release_date }}</p>
-        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
-      </li>
-    {% endfor %}
-  </ul>
+<h1>Top Plot Twists</h1>
+{% if top_plot_twists %}
+    <div class="plot-twists">
+        {% for plot_twist in top_plot_twists %}
+            <div>
+                <p>{{ plot_twist.description }} - Votes: {{ plot_twist.vote_count }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% else %}
-  <p>No top rated movies found.</p>
+    <p>No plot twists have been submitted yet.</p>
 {% endif %}
 
-<h2>Top Plot Twists</h2>
-{% if top_plot_twists %}
-  <ul>
-    {% for twist in top_plot_twists %}
-      <li>
-        <p>{{ twist.description }} ({{ twist.votes }} votes)</p>
-      </li>
-    {% endfor %}
-  </ul>
+<h1>Top Rated Movies</h1>
+{% if top_rated_movies %}
+    <div class="movies">
+        {% for movie in top_rated_movies %}
+            <div>
+                <a href="{% url 'reviews:movie_detail' movie.id %}">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                    <h2>{{ movie.title }}</h2>
+                </a>
+                
+            </div>
+        {% endfor %}
+    </div>
 {% else %}
-  <p>No plot twists have been submitted yet.</p>
+    <p>No top rated movies found.</p>
 {% endif %}
-{% endblock %} 
+{% endblock %}

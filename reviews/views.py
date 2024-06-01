@@ -9,6 +9,7 @@ from django.contrib.auth import login, logout, authenticate
 import requests     #TMDB API
 from django.contrib.auth.models import User   #posting plot twist
 import random
+from django.db.models import Count
 
 
 def index(request):
@@ -122,13 +123,24 @@ def get_top_rated_movies():
         print("Failed to fetch top-rated movies:", response.text)  # Debugging
         return None
 
+
+from django.db.models import Count
+
 def home(request):
-    top_rated_movies = get_top_rated_movies()
-    top_plot_twists = PlotTwist.objects.order_by('-votes')[:5]  # Top 5 plot twists, add more later
+    top_plot_twists = PlotTwist.objects.annotate(vote_count=Count('votes')).order_by('-vote_count')[:5]
+    top_rated_movies = get_top_rated_movies()  # Ensure this function is working correctly
+
+    if not top_rated_movies:
+        messages.info(request, "No top rated movies found.")
+    if not top_plot_twists.exists():
+        messages.info(request, "No plot twists have been submitted yet.")
+
     return render(request, 'home.html', {
         'top_rated_movies': top_rated_movies,
         'top_plot_twists': top_plot_twists
     })
+
+
 
 
 
@@ -137,7 +149,7 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Logs user in immediately 
+            login(request, user)  
             return redirect('home')  
     else:
         form = SignUpForm()
