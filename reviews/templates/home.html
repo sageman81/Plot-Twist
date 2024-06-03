@@ -2,11 +2,14 @@
 
 {% block content %}
 <h1>Top Plot Twists</h1>
-{% if top_plot_twists %}
+{% if plot_twists_with_movies %}
     <div class="plot-twists">
-        {% for plot_twist in top_plot_twists %}
+        {% for plot_twist, movie in plot_twists_with_movies %}
             <div>
-                <p>{{ plot_twist.description }} - Votes: {{ plot_twist.vote_count }}</p>
+                <h3>{{ plot_twist.description }}</h3> <!-- Assuming description should be shown as title -->
+                <p>- Votes: {{ plot_twist.votes }}</p>
+                <h4>{{ movie.title }}</h4>
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Poster for {{ movie.title }}">
             </div>
         {% endfor %}
     </div>
@@ -23,7 +26,6 @@
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
                     <h2>{{ movie.title }}</h2>
                 </a>
-                
             </div>
         {% endfor %}
     </div>

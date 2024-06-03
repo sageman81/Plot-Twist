@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required
-from .models import Review, PlotTwist  # Import PlotTwist if I plan to use it
+from .models import Review, PlotTwist
 from .forms import ReviewForm, PlotTwistForm, SignUpForm
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
@@ -10,7 +10,9 @@ import requests     #TMDB API
 from django.contrib.auth.models import User   #posting plot twist
 import random
 from django.db.models import Count
+import logging
 
+logger = logging.getLogger(__name__)
 
 def index(request):
     if request.method == 'POST':
@@ -124,21 +126,31 @@ def get_top_rated_movies():
         return None
 
 
-from django.db.models import Count
-
 def home(request):
     top_plot_twists = PlotTwist.objects.annotate(vote_count=Count('votes')).order_by('-vote_count')[:5]
-    top_rated_movies = get_top_rated_movies()  # Ensure this function is working correctly
+    top_rated_movies = get_top_rated_movies()
+
+    plot_twists_with_movies = []
+    for plot_twist in top_plot_twists:
+        response = requests.get(f'https://api.themoviedb.org/3/movie/{plot_twist.movie_id}?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
+        if response.status_code == 200:
+            movie_details = response.json()
+            plot_twists_with_movies.append((plot_twist, movie_details))
+        else:
+            logger.error(f"Failed to fetch movie details for movie_id {plot_twist.movie_id}: {response.text}")
 
     if not top_rated_movies:
         messages.info(request, "No top rated movies found.")
-    if not top_plot_twists.exists():
+        logger.info("No top rated movies found.")
+    if not plot_twists_with_movies:
         messages.info(request, "No plot twists have been submitted yet.")
+        logger.info("No plot twists have been submitted yet.")
 
     return render(request, 'home.html', {
         'top_rated_movies': top_rated_movies,
-        'top_plot_twists': top_plot_twists
+        'plot_twists_with_movies': plot_twists_with_movies
     })
+
 
 
 
