@@ -9,7 +9,7 @@ from django.contrib.auth import login, logout, authenticate
 import requests     #TMDB API
 from django.contrib.auth.models import User   #posting plot twist
 import random
-from django.db.models import Count
+from django.db.models import Count, Sum
 import logging
 
 logger = logging.getLogger(__name__)
@@ -127,7 +127,7 @@ def get_top_rated_movies():
 
 
 def home(request):
-    top_plot_twists = PlotTwist.objects.annotate(vote_count=Count('votes')).order_by('-vote_count')[:5]
+    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:5]
     print("Top plot twists:", [(pt.description, pt.vote_count) for pt in top_plot_twists])  # Debugging
     
     top_rated_movies = get_top_rated_movies()
