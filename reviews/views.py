@@ -128,6 +128,8 @@ def get_top_rated_movies():
 
 def home(request):
     top_plot_twists = PlotTwist.objects.annotate(vote_count=Count('votes')).order_by('-vote_count')[:5]
+    print("Top plot twists:", [(pt.description, pt.vote_count) for pt in top_plot_twists])  # Debugging
+    
     top_rated_movies = get_top_rated_movies()
 
     plot_twists_with_movies = []

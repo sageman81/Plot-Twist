@@ -6,10 +6,13 @@
     <div class="plot-twists">
         {% for plot_twist, movie in plot_twists_with_movies %}
             <div>
-                <h3>{{ plot_twist.description }}</h3> <!-- Assuming description should be shown as title -->
-                <p>- Votes: {{ plot_twist.votes }}</p>
-                <h4>{{ movie.title }}</h4>
-                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Poster for {{ movie.title }}">
+                <!-- Clickable movie title and poster -->
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                    <h4>{{ movie.title }}</h4>
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Poster for {{ movie.title }}" style="width: 100px; height: 150px;">
+                </a>
+                <h3>{{ plot_twist.description }}</h3>
+                <p>Votes: {{ plot_twist.vote_count }}</p>
             </div>
         {% endfor %}
     </div>
@@ -22,8 +25,9 @@
     <div class="movies">
         {% for movie in top_rated_movies %}
             <div>
-                <a href="{% url 'reviews:movie_detail' movie.id %}">
-                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                <!-- Clickable movie title and poster -->
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" style="width: 100px; height: 150px;">
                     <h2>{{ movie.title }}</h2>
                 </a>
             </div>
@@ -33,3 +37,4 @@
     <p>No top rated movies found.</p>
 {% endif %}
 {% endblock %}
+
