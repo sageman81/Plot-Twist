@@ -17,12 +17,12 @@
     <h2>Plot Twists</h2>
     {% for plot_twist in plot_twists %}
         <div>
-            <p>{{ plot_twist.description }} - Votes: {{ plot_twist.votes }}</p>
-            <form method="post" action="{% url 'upvote_plot_twist' plot_twist.id %}">
+            <p>{{ plot_twist.description }} - Votes: <span id="votes-{{ plot_twist.id }}">{{ plot_twist.votes }}</span></p>
+            <form method="post" action="{% url 'upvote_plot_twist' plot_twist.id %}" class="vote-form" data-plot-twist-id="{{ plot_twist.id }}">
                 {% csrf_token %}
                 <button type="submit">Upvote</button>
             </form>
-            <form method="post" action="{% url 'downvote_plot_twist' plot_twist.id %}">
+            <form method="post" action="{% url 'downvote_plot_twist' plot_twist.id %}" class="vote-form" data-plot-twist-id="{{ plot_twist.id }}">
                 {% csrf_token %}
                 <button type="submit">Downvote</button>
             </form>
@@ -35,4 +35,36 @@
     {% empty %}
         <p>No plot twists have been submitted yet.</p>
     {% endfor %}
+
+    <script>
+        document.querySelectorAll('.vote-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent the normal form submission
+                const formData = new FormData(form);
+                const plotTwistId = form.dataset.plotTwistId;  // Use data attribute for reliability
+    
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')  // Include CSRF token
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    console.log('Looking for element with ID: votes-' + plotTwistId);
+                    console.log('Element found:', document.getElementById('votes-' + plotTwistId));
+                    console.log('Data received:', data);
+    
+                    if (document.getElementById('votes-' + plotTwistId)) {
+                        document.getElementById('votes-' + plotTwistId).textContent = data.votes;  // Update votes count on page
+                    } else {
+                        console.error('Element not found for ID: votes-' + plotTwistId);
+                    }
+                }).catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+    
+    
 {% endblock %}
+

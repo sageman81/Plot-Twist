@@ -191,22 +191,26 @@ def upvote_plot_twist(request, plot_twist_id):
         plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
         plot_twist.votes += 1
         plot_twist.save()
-        print("Vote incremented:", plot_twist.votes)  # Debugging
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-    else:
-        return redirect('/') 
+        return JsonResponse({'votes': plot_twist.votes})
+   
 
 
+# def downvote_plot_twist(request, plot_twist_id):
+#     if request.method == 'POST':
+#         plot_twist = PlotTwist.objects.get(id=plot_twist_id)
+#         plot_twist.votes -= 1
+#         plot_twist.save()
+#         return JsonResponse({'votes': plot_twist.votes})
+#     else:
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
 def downvote_plot_twist(request, plot_twist_id):
     if request.method == 'POST':
-        plot_twist = PlotTwist.objects.get(id=plot_twist_id)
+        plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
         plot_twist.votes -= 1
         plot_twist.save()
         return JsonResponse({'votes': plot_twist.votes})
-    else:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    
-
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 def edit_plot_twist(request, plot_twist_id, movie_id):
     plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
@@ -242,6 +246,25 @@ def delete_plot_twist(request, plot_twist_id, movie_id):
     return redirect('reviews:movie_detail', movie_id=movie_id)
 
 
+def api_top_plot_twists(request):
+    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:5]
+
+    plot_twists_with_movies = []
+    for plot_twist in top_plot_twists:
+        response = requests.get(f'https://api.themoviedb.org/3/movie/{plot_twist.movie_id}?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
+        if response.status_code == 200:
+            movie_details = response.json()
+            plot_twists_with_movies.append({
+                'plot_twist_id': plot_twist.id,
+                'description': plot_twist.description,
+                'votes': plot_twist.vote_count,
+                'movie_title': movie_details.get('title'),
+                'poster_path': f"https://image.tmdb.org/t/p/w500{movie_details.get('poster_path')}"
+            })
+
+    return JsonResponse({
+        'plot_twists': plot_twists_with_movies
+    })
 
 
 
