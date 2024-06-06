@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const MovieSearchPage = () => {
     const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        fetchMovies();  // Fetch popular movies on component mount
+        fetchMovies();  // Fetch popular movies 
     }, []);
 
     const fetchMovies = async () => {
@@ -36,8 +37,10 @@ const MovieSearchPage = () => {
                 {movies.length > 0 ? (
                     movies.map(movie => (
                         <div key={movie.id}>
-                            <h4>{movie.title}</h4>
-                            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                            <Link to={`/movie/${movie.id}`}>
+                                <h4>{movie.title}</h4>
+                                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+                            </Link>
                         </div>
                     ))
                 ) : (

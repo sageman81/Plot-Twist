@@ -34,7 +34,7 @@ urlpatterns = [
     path('api/top-plot-twists/', api_top_plot_twists, name='api-top-plot-twists'),
     path('movie_search/', movie_search, name='movie_search'),
     path('api/popular_movies/', get_popular_movies, name='popular_movies'),
-    
+    path('api/movie/<int:movie_id>/', movie_detail, name='movie_detail_api'),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')), #to frontend, moved to the end
 
 ]
