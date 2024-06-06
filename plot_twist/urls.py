@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import include, path, re_path
 from django.contrib import admin
-from reviews.views import home, signup, upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail, api_top_plot_twists
+from reviews.views import home, signup, upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail, api_top_plot_twists, movie_search
 from django.views.generic import TemplateView #to frontend
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     path('plot_twist/<int:movie_id>/<int:plot_twist_id>/delete/', delete_plot_twist, name='delete_plot_twist'),
     path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),
     path('api/top-plot-twists/', api_top_plot_twists, name='api-top-plot-twists'),
+    path('movie_search/', movie_search, name='movie_search'),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')), #to frontend, moved to the end
 ]
 
