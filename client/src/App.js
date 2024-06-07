@@ -7,8 +7,10 @@ import MovieDetails from './components/MovieDetails'; //Problems!
 import LoginPage from './components/LoginPage';
 import LogoutPage from './components/LogoutPage';
 import NavBar from './components/NavBar';
-import './App.css';
+import  './App.css';
 import './styles/styles.css';
+import './output.css';
+
 
 const App = () => {
     return (

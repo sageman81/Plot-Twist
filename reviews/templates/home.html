@@ -6,7 +6,7 @@
     <div class="plot-twists">
         {% for plot_twist, movie in plot_twists_with_movies %}
             <div>
-                <!-- Clickable movie title and poster -->
+                
                 <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
                     <h4>{{ movie.title }}</h4>
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="Poster for {{ movie.title }}" style="width: 100px; height: 150px;">
@@ -25,7 +25,7 @@
     <div class="movies">
         {% for movie in top_rated_movies %}
             <div>
-                <!-- Clickable movie title and poster -->
+                
                 <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
                     <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" style="width: 100px; height: 150px;">
                     <h2>{{ movie.title }}</h2>

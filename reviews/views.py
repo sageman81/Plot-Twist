@@ -10,6 +10,7 @@ import requests     #TMDB API
 from django.contrib.auth.models import User   #posting plot twist
 import random
 from django.db.models import Count, Sum
+from django.middleware.csrf import get_token
 import logging
 
 logger = logging.getLogger(__name__)
@@ -109,95 +110,10 @@ def submit_plot_twist(request, movie_id):
             plot_twist.movie_id = movie_id
             plot_twist.user = request.user
             plot_twist.save()
-            return redirect('movie_detail', movie_id=movie_id)
-    else:
-        form = PlotTwistForm()
-    return render(request, 'submit_plot_twist.html', {'form': form})
-
-
-
-# def movie_search(request):
-#     popular_movies = None
-#     if not request.GET.get('query'):
-#         # Fetch popular movies 
-#         response = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
-#         if response.status_code == 200:
-#             popular_movies = response.json()['results']
-
-#     query = request.GET.get('query', '')
-#     movie_data = get_movie_data(query) if query else None
-#     return render(request, 'reviews/movie_search.html', {
-#         'movie_data': movie_data,
-#         'popular_movies': popular_movies
-#     })
-
-
-# def movie_search(request):
-#     query = request.GET.get('query', '')
-#     context = {}
-#     if query:
-#         movie_data = get_movie_data(query)
-#         context['movie_data'] = movie_data
-#     else:
-#         popular_movies = get_popular_movies()
-#         context['popular_movies'] = popular_movies
-#     return render(request, 'reviews/movie_search.html', context)  # Adjusted path
-
-# def movie_search(request):
-#     query = request.GET.get('query', '')
-#     print("Query received:", query) 
-#     if query:
-#         movie_data = get_movie_data(query)
-#         return JsonResponse({'movies': movie_data['results']}, safe=False) # Make sure 'results' is the correct key
-#     else:
-#         return JsonResponse({'movies': []})
-
-
-
-# def get_popular_movies():
-#     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
-#     url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}"
-#     response = requests.get(url)
-#     if response.status_code == 200:
-#         return response.json()['results']
-#     else:
-#         return None
-
-# def popular_movies_view(request):
-#     popular_movies = get_popular_movies()
-#     if popular_movies:
-#         return JsonResponse({'movies': popular_movies}, safe=False)
-#     else:
-#         return JsonResponse({'movies': []})
-
-
-
-
-
-
-
-# def movie_detail(request, movie_id):
-#     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
-#     response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}')
-#     movie = response.json() if response.status_code == 200 else None
-
-#     if not movie:
-#         messages.error(request, 'Movie not found')
-#         return redirect('reviews:movie_search')
-
-#     plot_twists = PlotTwist.objects.filter(movie_id=movie_id).order_by('-votes')
-#     form = PlotTwistForm()
-
-#     if request.method == 'POST':
-#         form = PlotTwistForm(request.POST)
-#         if form.is_valid():
-#             plot_twist = form.save(commit=False)
-#             plot_twist.movie_id = movie_id
-#             plot_twist.user = request.user
-#             plot_twist.save()
-#             return redirect('reviews:movie_detail', movie_id=movie_id)
-
-#     return render(request, 'movie_detail.html', {'movie': movie, 'plot_twists': plot_twists, 'form': form})
+            return JsonResponse({'status': 'success', 'plot_twist_id': plot_twist.id})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+    return JsonResponse({'status': 'invalid method'}, status=405)
 
 
 
@@ -217,50 +133,7 @@ def submit_plot_twist(request, movie_id):
 
 
 
-# def movie_search(request):
-#     popular_movies = None
-#     if not request.GET.get('query'):
-#         # Fetch popular movies 
-#         response = requests.get('https://api.themoviedb.org/3/movie/popular?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
-#         if response.status_code == 200:
-#             popular_movies = response.json()['results']
 
-#     query = request.GET.get('query', '')
-#     movie_data = get_movie_data(query) if query else None
-#     return render(request, 'reviews/movie_search.html', {
-#         'movie_data': movie_data,
-#         'popular_movies': popular_movies
-#     })
-
-
-# def movie_search(request):
-#     query = request.GET.get('query', '')
-#     context = {}
-#     if query:
-#         movie_data = get_movie_data(query)
-#         context['movie_data'] = movie_data
-#     else:
-#         popular_movies = get_popular_movies()
-#         context['popular_movies'] = popular_movies
-#     return render(request, 'reviews/movie_search.html', context)  # Adjusted path
-
-# def movie_search(request):
-#     query = request.GET.get('query', '')
-#     print("Query received:", query) 
-#     if query:
-#         movie_data = get_movie_data(query)
-#         return JsonResponse({'movies': movie_data['results']}, safe=False) # Make sure 'results' is the correct key
-#     else:
-#         return JsonResponse({'movies': []})
-# def movie_search(request):
-#     query = request.GET.get('query', '')
-#     print("Query received:", query)  # Debug the received query
-#     if query:
-#         movie_data = get_movie_data(query)
-#         print("Movie data fetched:", movie_data)  # Debug the fetched data
-#         return JsonResponse({'movies': movie_data.get('results', [])})
-#     else:
-#         return JsonResponse({'movies': []})
 
 def movie_search(request):
     query = request.GET.get('query', '')
@@ -280,6 +153,7 @@ def movie_search(request):
 
 
 def get_popular_movies(request):
+    
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
     url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}"
     response = requests.get(url)
@@ -305,33 +179,29 @@ def get_top_rated_movies():
         return None
 
 
-def home(request):
-    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:5]
-    print("Top plot twists:", [(pt.description, pt.vote_count) for pt in top_plot_twists])  # Debugging
-    
-    top_rated_movies = get_top_rated_movies()
 
+
+
+def api_home(request):
+    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:5]
     plot_twists_with_movies = []
+
     for plot_twist in top_plot_twists:
         response = requests.get(f'https://api.themoviedb.org/3/movie/{plot_twist.movie_id}?api_key=3c051ccfcf4b5e91dc38ecca9b825464')
         if response.status_code == 200:
             movie_details = response.json()
-            plot_twists_with_movies.append((plot_twist, movie_details))
+            plot_twists_with_movies.append({
+                'movie_id': plot_twist.movie_id,
+                'title': movie_details.get('title'),
+                'poster_path': f"https://image.tmdb.org/t/p/w500{movie_details.get('poster_path')}",
+                'description': movie_details.get('overview'),
+                'release_date': movie_details.get('release_date')
+            })
         else:
-            logger.error(f"Failed to fetch movie details for movie_id {plot_twist.movie_id}: {response.text}")
+            logger.error(f"Error fetching movie details for movie ID {plot_twist.movie_id}: {response.text}")
+            # It may be useful to append an error message or similar here if necessary
 
-    if not top_rated_movies:
-        messages.info(request, "No top rated movies found.")
-        logger.info("No top rated movies found.")
-    if not plot_twists_with_movies:
-        messages.info(request, "No plot twists have been submitted yet.")
-        logger.info("No plot twists have been submitted yet.")
-
-    return render(request, 'home.html', {
-        'top_rated_movies': top_rated_movies,
-        'plot_twists_with_movies': plot_twists_with_movies
-    })
-
+    return JsonResponse({'movies_with_most_twists': plot_twists_with_movies})
 
 
 
@@ -381,6 +251,8 @@ def downvote_plot_twist(request, plot_twist_id):
         plot_twist.save()
         return JsonResponse({'votes': plot_twist.votes})
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
 
 def edit_plot_twist(request, plot_twist_id, movie_id):
     plot_twist = get_object_or_404(PlotTwist, id=plot_twist_id)
@@ -439,9 +311,13 @@ def api_top_plot_twists(request):
 
 
 
+def home_view(request):
+    # Your code here, for example:
+    return render(request, 'reviews/home.html')
 
 
-
+def csrf(request):
+    return JsonResponse({'csrfToken': get_token(request)})
 
 
 

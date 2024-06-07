@@ -56,6 +56,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'plot_twist.urls'
 
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+
+# Name of the CSRF cookie (default is 'csrftoken', change if yours is different)
+CSRF_COOKIE_NAME = 'csrftoken'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
