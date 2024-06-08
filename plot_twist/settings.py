@@ -61,10 +61,13 @@ ROOT_URLCONF = 'plot_twist.urls'
 
 CORS_ALLOW_HEADERS = '*'
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',  
+]
 
 # Name of the CSRF cookie 
 CSRF_COOKIE_NAME = 'csrf'
-CSRF_COOKIE_HTTPONLY = False  
+CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
@@ -165,7 +168,7 @@ STATICFILES_DIRS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',  # For session-based auth
-        'rest_framework.authentication.TokenAuthentication',  # For token-based auth (requires Token model)
+        # 'rest_framework.authentication.TokenAuthentication',  # For token-based auth (requires Token model)
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',  # Ensures login is required by any

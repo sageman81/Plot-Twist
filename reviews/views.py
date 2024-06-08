@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseNotAllowed, HttpResponseRedirect
-
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from .models import Review, PlotTwist
 from .forms import ReviewForm, PlotTwistForm, SignUpForm
@@ -12,7 +12,7 @@ import random
 from django.db.models import Count, Sum
 from django.middleware.csrf import get_token
 import logging
-
+import json
 
 
 # Custom logout view
@@ -109,8 +109,9 @@ def movie_detail(request, movie_id):
 
 
 
-
+@require_http_methods(["POST"])  # Ensure only POST method is accepted
 def submit_plot_twist(request, movie_id):
+    # Your existing code for handling the post data
     if request.method == 'POST':
         form = PlotTwistForm(request.POST)
         if form.is_valid():
@@ -121,7 +122,8 @@ def submit_plot_twist(request, movie_id):
             return JsonResponse({'status': 'success', 'plot_twist_id': plot_twist.id})
         else:
             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
-    return JsonResponse({'status': 'invalid method'}, status=405)
+    else:
+        return JsonResponse({'status': 'invalid method'}, status=405)
 
 
 
@@ -139,19 +141,34 @@ def submit_plot_twist(request, movie_id):
 #         form = PlotTwistForm()
 #     return render(request, 'submit_plot_twist.html', {'form': form})
 
-def submit_plot_twist(request, movie_id):
+# def submit_plot_twist(request, movie_id):
+#     if request.method == 'POST':
+#         form = PlotTwistForm(request.POST)
+#         if form.is_valid():
+#             plot_twist = form.save(commit=False)
+#             plot_twist.movie_id = movie_id
+#             plot_twist.user = request.user
+#             plot_twist.save()
+#             return JsonResponse({'status': 'success', 'plot_twist_id': plot_twist.id})
+#         else:
+#             return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+#     else:
+#         return JsonResponse({'status': 'invalid method'}, status=405)
+@csrf_exempt
+def submit_review(request):
     if request.method == 'POST':
-        form = PlotTwistForm(request.POST)
-        if form.is_valid():
-            plot_twist = form.save(commit=False)
-            plot_twist.movie_id = movie_id
-            plot_twist.user = request.user
-            plot_twist.save()
-            return JsonResponse({'status': 'success', 'plot_twist_id': plot_twist.id})
-        else:
-            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+        data = json.loads(request.body)
+        movie = data.get('movie')
+        review_text = data.get('review')
+        user = request.user if request.user.is_authenticated else None
+
+        if not user:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
+
+        review = Review.objects.create(movie=movie, review=review_text, user=user)
+        return JsonResponse({'message': 'Review added successfully', 'id': review.id}, status=201)
     else:
-        return JsonResponse({'status': 'invalid method'}, status=405)
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
 
 
 
@@ -372,30 +389,26 @@ class LogoutView(APIView):
 @csrf_exempt
 def signup(request):
     if request.method == 'POST':
-        # For handling JSON data
-        import json
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-        email = data.get('email')  # Assuming you want to use email, adjust accordingly
+        email = data.get('email')  # Make sure to include email in your data if necessary
 
-        if not (username and password):
-            return JsonResponse({'error': 'Username and password required'}, status=400)
-
-        # Check if user already exists
         if User.objects.filter(username=username).exists():
             return JsonResponse({'error': 'Username already exists'}, status=409)
 
-        # Create user
         user = User.objects.create_user(username=username, password=password, email=email)
         user.save()
 
-        # Optionally create a token at signup
-        token = Token.objects.create(user=user)
+        token = Token.objects.create(user=user)  # Create a token for the new user
 
-        return JsonResponse({'message': 'User created successfully', 'token': token.key}, status=201)
+        return JsonResponse({
+            'message': 'User created successfully',
+            'token': token.key,
+            'user_id': user.id
+        }, status=201)
     else:
-        return JsonResponse({'error': 'Invalid method'}, status=405)
+        return JsonResponse({'error': 'Invalid HTTP method'}, status=405)
 
 
 

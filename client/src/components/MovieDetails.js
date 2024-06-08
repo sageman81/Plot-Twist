@@ -35,22 +35,24 @@ const MovieDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8000/api/submit_plot_twist/${movieId}/`, { description }, {
+            const response = await axios.post(`http://localhost:8000/api/submit_plot_twist/${movieId}/`, JSON.stringify({ description }), {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
+                    'X-CSRFToken': csrfToken,  // Ensure this token is being fetched and stored correctly
                 }
             });
             if (response.data.status === 'success') {
                 alert('Plot twist submitted successfully!');
-                setDescription('');
+                setDescription('');  // Clear the form field after successful submission
             } else {
-                alert('Error submitting plot twist:', response.data.message);
+                alert('Error submitting plot twist:', response.data.errors || 'Unknown error');
             }
         } catch (error) {
             console.error('Failed to submit plot twist:', error);
+            alert('Failed to submit plot twist. Check console for details.');
         }
     };
+    
 
     const handleVote = async (plotTwistId, type) => {
         try {

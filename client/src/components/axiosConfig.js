@@ -5,7 +5,8 @@ const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/',
     timeout: 5000, 
     headers: {
-        Authorization: `Token ${localStorage.getItem('token')}`
+        Authorization: `Token ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
     }
 });
 
