@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome to Plot Twist{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -14,6 +16,8 @@
             <a href="{% url 'admin:index' %}">Admin</a>
             <a href="{% url 'logout' %}">Logout</a>
             <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'reviews:signup' %}">Sign Up</a>
+
         </nav>
     </header>
     <main>

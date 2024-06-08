@@ -11,6 +11,8 @@ from django.contrib.auth.models import User   #posting plot twist
 import random
 from django.db.models import Count, Sum
 import logging
+from django.contrib.auth.forms import AuthenticationForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -154,20 +156,20 @@ def home(request):
     })
 
 
-
-
-
-
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  
-            return redirect('home')  
+            login(request, user)
+            messages.success(request, 'User created and logged in successfully')
+            return redirect('home')
+        else:
+            messages.error(request, 'There was an error creating your account')
     else:
         form = SignUpForm()
     return render(request, 'registration/sign_up_form.html', {'form': form})
+    
 
 
 def random_movie(request):
@@ -242,6 +244,23 @@ def delete_plot_twist(request, plot_twist_id, movie_id):
     return redirect('reviews:movie_detail', movie_id=movie_id)
 
 
-
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f'You are now logged in as {username}.')
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid username or password.')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
 
 
