@@ -12,14 +12,14 @@ const axiosInstance = axios.create({
 
 // CSRF tokens
 axiosInstance.defaults.xsrfCookieName = 'csrf';
-axiosInstance.defaults.xsrfHeaderName = 'X-CSRFToken';
+axiosInstance.defaults.xsrfHeaderName = 'HTTP_X_CSRFTOKEN';
 
 // CSRF token is sent with every request
 axiosInstance.interceptors.request.use((config) => {
     const token = Cookies.get('csrf'); 
     console.log('CSRF Token:', token);
     if (token) {
-        config.headers['X-CSRFToken'] = token;
+        config.headers['HTTP_X_CSRFTOKEN'] = token;
     }
     return config;
 });

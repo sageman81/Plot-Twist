@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'reviews',
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken', 
+     'reviews',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ CORS_ORIGIN_WHITELIST = [
 CSRF_COOKIE_NAME = 'csrf'
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = False
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
