@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import include, path, re_path
 from django.contrib import admin
-from reviews.views import signup, upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail, api_top_plot_twists, movie_search, get_popular_movies, get_popular_movies, api_home, csrf
+from reviews.views import signup, upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail, api_top_plot_twists, movie_search, get_popular_movies, get_popular_movies, api_home, csrf, CustomAuthToken, LogoutView
 
 from django.views.generic import TemplateView #to frontend
 
@@ -39,6 +39,12 @@ urlpatterns = [
     path('api/movie/<int:movie_id>/', movie_detail, name='movie_detail_api'),
     path('api/csrf/', csrf, name='csrf'),
     re_path(r'^.*$', TemplateView.as_view(template_name='index.html')), #to frontend, moved to the end
+
+
+    path('api-token-auth/', CustomAuthToken.as_view(), name='api_token_auth'),
+    path('api-logout/', LogoutView.as_view(), name='api_logout'),
+    
+
 
 ]
 

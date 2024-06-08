@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken', 
 ]
 
 MIDDLEWARE = [
@@ -53,15 +55,19 @@ MIDDLEWARE = [
 
 ]
 CORS_ALLOW_ALL_ORIGINS = True 
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 
 ROOT_URLCONF = 'plot_twist.urls'
 
-
+CORS_ALLOW_HEADERS = '*'
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
-# Name of the CSRF cookie (default is 'csrftoken', change if yours is different)
-CSRF_COOKIE_NAME = 'csrftoken'
+# Name of the CSRF cookie 
+CSRF_COOKIE_NAME = 'csrf'
+CSRF_COOKIE_HTTPONLY = False  
+CSRF_COOKIE_SECURE = False
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 TEMPLATES = [
     {
@@ -136,7 +142,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -151,5 +157,17 @@ LOGIN_REDIRECT_URL = 'reviews:index'  # Assuming 'index' is a named URL pattern 
 LOGOUT_REDIRECT_URL = 'login'  # Redirect to login page after logout
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'path_to_react_build_folder')
+    # os.path.join(BASE_DIR, 'path_to_react_build_folder')
+    os.path.join(BASE_DIR, 'client/build/static')
+
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',  # For session-based auth
+        'rest_framework.authentication.TokenAuthentication',  # For token-based auth (requires Token model)
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',  # Ensures login is required by any
+    ),
+}

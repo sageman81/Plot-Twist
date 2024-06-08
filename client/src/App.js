@@ -4,6 +4,8 @@ import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import MovieSearchPage from './components/MovieSearchPage';
 import MovieDetails from './components/MovieDetails'; //Problems!
+import SignUpPage from './components/SignUpPage';
+
 import LoginPage from './components/LoginPage';
 import LogoutPage from './components/LogoutPage';
 import NavBar from './components/NavBar';
@@ -21,6 +23,7 @@ const App = () => {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/movie-search" element={<MovieSearchPage />} />
                 <Route path="/movie/:movieId" element={<MovieDetails />} />
+                <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
             </Routes>

@@ -13,6 +13,14 @@ from django.db.models import Count, Sum
 from django.middleware.csrf import get_token
 import logging
 
+
+
+# Custom logout view
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from django.views.decorators.csrf import csrf_exempt
 logger = logging.getLogger(__name__)
 
 def index(request):
@@ -118,6 +126,19 @@ def submit_plot_twist(request, movie_id):
 
 
 
+# def submit_plot_twist(request, movie_id):
+#     if request.method == 'POST':
+#         form = PlotTwistForm(request.POST)
+#         if form.is_valid():
+#             plot_twist = form.save(commit=False)
+#             plot_twist.movie_id = movie_id
+#             plot_twist.user = request.user
+#             plot_twist.save()
+#             return redirect('movie_detail', movie_id=movie_id)
+#     else:
+#         form = PlotTwistForm()
+#     return render(request, 'submit_plot_twist.html', {'form': form})
+
 def submit_plot_twist(request, movie_id):
     if request.method == 'POST':
         form = PlotTwistForm(request.POST)
@@ -126,11 +147,11 @@ def submit_plot_twist(request, movie_id):
             plot_twist.movie_id = movie_id
             plot_twist.user = request.user
             plot_twist.save()
-            return redirect('movie_detail', movie_id=movie_id)
+            return JsonResponse({'status': 'success', 'plot_twist_id': plot_twist.id})
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
     else:
-        form = PlotTwistForm()
-    return render(request, 'submit_plot_twist.html', {'form': form})
-
+        return JsonResponse({'status': 'invalid method'}, status=405)
 
 
 
@@ -207,16 +228,19 @@ def api_home(request):
 
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  
-            return redirect('home')  
-    else:
-        form = SignUpForm()
-    return render(request, 'registration/sign_up_form.html', {'form': form})
+# def signup(request):
+#     if request.method == 'POST':
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)  
+#             return redirect('home')  
+#     else:
+#         form = SignUpForm()
+#     return render(request, 'registration/sign_up_form.html', {'form': form})
+
+
+
 
 
 def random_movie(request):
@@ -319,12 +343,59 @@ def home_view(request):
 def csrf(request):
     return JsonResponse({'csrfToken': get_token(request)})
 
+# Login using Django REST Framework's token authentication
+class CustomAuthToken(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'token': token.key,
+                'user_id': user.pk,
+                'email': user.email
+            })
+        else:
+            return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
+# Custom logout view
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            request.user.auth_token.delete()
+        except (AttributeError, Token.DoesNotExist):
+            pass
+        logout(request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
+@csrf_exempt
+def signup(request):
+    if request.method == 'POST':
+        # For handling JSON data
+        import json
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        email = data.get('email')  # Assuming you want to use email, adjust accordingly
 
+        if not (username and password):
+            return JsonResponse({'error': 'Username and password required'}, status=400)
 
+        # Check if user already exists
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists'}, status=409)
 
+        # Create user
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.save()
 
+        # Optionally create a token at signup
+        token = Token.objects.create(user=user)
+
+        return JsonResponse({'message': 'User created successfully', 'token': token.key}, status=201)
+    else:
+        return JsonResponse({'error': 'Invalid method'}, status=405)
 
 
 

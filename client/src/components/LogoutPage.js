@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutPage = () => {
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Logout</h1>
-      {/* Implementation of logout functionality */}
-      <p>Logout functionality will be implemented here.</p>
-    </div>
-  );
-}
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const performLogout = async () => {
+            try {
+                
+                await axios.post('http://localhost:8000/api/logout/', {}, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                });
+                console.log('Logged out successfully');
+            } catch (error) {
+                console.error('Failed to log out:', error);
+            }
+            
+            localStorage.removeItem('token');
+            // Redirect to the home page or login page
+            navigate('/');
+        };
+
+        performLogout();
+    }, [navigate]);
+
+    return (
+        <div>
+            Logging out...
+        </div>
+    );
+};
 
 export default LogoutPage;
+
