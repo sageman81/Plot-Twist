@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import django_heroku # type: ignore
 from pathlib import Path
 import os
 
@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'plot_twist.urls'
@@ -138,3 +139,5 @@ LOGIN_REDIRECT_URL = 'reviews:index'  # Assuming 'index' is a named URL pattern 
 
 # URL to redirect to after logout (String, pattern name or callable)
 LOGOUT_REDIRECT_URL = 'login'  # Redirect to login page after logout
+
+django_heroku.settings(locals())

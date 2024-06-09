@@ -39,6 +39,7 @@ praw==7.7.1
 prawcore==2.3.0
 protobuf==3.19.6
 psycopg2==2.9.9
+psycopg2-binary==2.9.9
 pycosat @ file:///Users/runner/miniforge3/conda-bld/pycosat_1666836623787/work
 pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
 pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1672659226110/work
