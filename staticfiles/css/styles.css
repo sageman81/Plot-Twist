@@ -1,0 +1,220 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header, footer {
+    background-color: #20232a;
+    color: #61dafb;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+nav a, button {
+    color: #61dafb;
+    margin-right: 20px;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+}
+
+footer {
+    color: white;
+}
+
+ul.messages {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul.messages li {
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+/* Grid layout for movies and plot twists - applies to home and other pages */
+.movies, .plot-twists {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.movies div, .plot-twists div {
+    text-align: center;
+}
+
+.movies img, .plot-twists img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Movie Search Page Specific Styles */
+.search-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 60%; /* Adjust width as necessary */
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.search-results li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-results img {
+    width: 100%;
+    max-width: 200px; /* Ensures images are not too large */
+    height: auto;
+    border-radius: 5px;
+}
+
+.search-results a {
+    text-decoration: none;
+    color: #333;
+    text-align: center;
+}
+
+/* Movie Details Page Specific Styles */
+.movie-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;  /* Limit the max width */
+    margin: auto; /* Center the container on the page */
+    padding: 20px;
+    text-align: center; /* Center align text for consistent formatting */
+}
+
+.movie-poster img {
+    width: 100%; /* Full width of its container */
+    max-width: 300px; /* Limit how large the image can get */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for aesthetics */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+.movie-info {
+    text-align: left; /* Align text to the left within its container */
+    margin-top: 20px; /* Space above the movie info for clear separation */
+}
+
+/* Container styles for plot twist submission and viewing */
+.plot-twist-submission-container, .plot-twists-container {
+    width: 100%;
+    max-width: 800px; /* Consistent with the movie details container */
+    margin: 20px auto; /* Center and provide spacing from other content */
+    padding: 20px;
+    background-color: #fff; /* Background color for visibility */
+    border-radius: 8px; /* Soften edges */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    text-align: center; /* Aligns text in the center */
+}
+
+.plot-twist-card {
+    background-color: #f9f9f9; /* Lighter background for differentiation */
+    border: 1px solid #ddd; /* Slight border for definition */
+    padding: 10px;
+    margin-bottom: 10px; /* Space between cards */
+    border-radius: 5px; /* Consistent rounded corners */
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-around; /* Distribute space around buttons evenly */
+    margin-top: 10px;
+}
+
+button, .edit-link {
+    background-color: #61dafb; /* Light blue for a friendly look */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-decoration: none; /* Removes underline from links styled as buttons */
+    flex: 1; /* Each button takes equal space */
+}
+
+button:hover, .edit-link:hover {
+    background-color: #559abc; /* A darker shade for hover effect */
+}
+
+/* Remove form labels for cleaner look */
+label {
+    display: none;
+}
+
+.signup-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+    color: #ff0000;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #61dafb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #559abc;
+}
+
+
+
+@media (max-width: 768px) {
+    .buttons-container,
+    .movie-detail-container,
+    .plot-twists,
+    .plot-twist-submission {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a, button {
+        width: 100%; /* Ensures full width on mobile for easier touch */
+        text-align: center;
+    }
+}
