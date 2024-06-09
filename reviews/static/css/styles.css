@@ -55,142 +55,174 @@ ul.messages li {
     border-radius: 5px;
 }
 
+/* Base container style */
 .container {
-    width: 100%; /* Full width of its parent */
-    max-width: 1200px; /* Maximum width */
-    margin: 0 auto; /* Centers the container */
-    padding: 20px; /* Padding inside the container */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: Adds shadow for depth */
-    background-color: #fff; /* Background color for content distinction */
-    border-radius: 8px; /* Rounded corners */
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    border-radius: 8px;
+    text-align: center;
 }
 
-.header-container,
-.content-container,
-.footer-container {
-    margin-bottom: 20px; /* Space between containers */
-}
-
-/* Base container for movie details, ensuring margin and padding for layout */
-.movie-details-container {
+/* Styles for movie details page */
+.movie-detail-container {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    max-width: 1200px;
+    align-items: center;
     padding: 20px;
 }
 
-/* Styling for the movie poster and info to be side by side */
-.detail-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.movie-poster {
-    flex: 1;
-    max-width: 300px;  /* Limiting width for responsiveness */
+.movie-poster img {
+    width: 100%;
+    max-width: 300px;
     height: auto;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .movie-info {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    font-size: 14px; /* Smaller font size for details */
-}
-
-.movie-info p, .movie-info h1 {
-    margin-bottom: 10px;
-}
-
-.link-button {
-    background-color: #61dafb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.link-button:hover {
-    background-color: #559abc;
-}
-
-/* Layout for plot twist submission and existing twists */
-.twists-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    text-align: left;
+    width: 100%;
+    padding: 20px;
 }
 
 .plot-twist-submission {
-    flex: 1;
-    margin-right: 20px; /* Space between submission form and list */
+    text-align: center;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     border-radius: 8px;
 }
 
 .plot-twists {
-    flex: 2;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .plot-twist-card {
-    background-color: white;
-    border: 1px solid #ddd;
+    width: 100%;
+    background-color: #fff;
     padding: 10px;
+    margin: 10px 0;
     border-radius: 5px;
-    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .buttons-container {
     display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    margin-top: 10px;
+    justify-content: space-evenly; /* Ensures even distribution of space around each button */
+    gap: 10px; /* Consistent gap between buttons */
+    padding: 10px 0; /* Vertical padding for better spacing */
 }
 
 button, .edit-link {
-    background-color: #4CAF50;
+    background-color: #5a5a5a; /* Sophisticated neutral gray */
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 8px 16px;
+    padding: 8px 16px; /* Provides ample clickable area without being too large */
     cursor: pointer;
     text-align: center;
-    text-decoration: none;
-    flex-grow: 1;
+    width: auto; /* Auto width based on content, ensuring uniformity */
+    flex-grow: 1; /* Allows each button to grow evenly filling the container */
 }
 
 button:hover, .edit-link:hover {
-    background-color: #45a049;
+    background-color: #404040; /* Slightly darker gray for hover effect */
 }
 
+.edit-link {
+    background-color: transparent;
+    color: #757575;
+    text-decoration: none;
+    padding: 8px 16px; /* Matches the button padding for uniformity */
+    display: block; /* Makes the link behave like a button */
+}
+
+/* Remove form labels for cleaner look */
+label {
+    display: none;
+}
+
+/* Movie Search Page Specific Styles */
+.search-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    width: 60%; /* Adjust width as necessary */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button, a.button {
+    background-color: #61dafb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+button:hover, a.button:hover {
+    background-color: #559abc;
+}
+
+.search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.search-results li {
+    list-style-type: none;
+}
+
+.search-results img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.search-results a {
+    color: #333;
+    text-decoration: none;
+}
+
+
+
+
+
 @media (max-width: 768px) {
-    .detail-grid {
+    .movie-detail-container {
         flex-direction: column;
     }
 
     .movie-info {
-        order: 2; /* Ensures the movie info appears below the poster on small screens */
+        text-align: center;
     }
 
-    .twists-container {
-        flex-direction: column;
+    .plot-twists,
+    .plot-twist-submission {
+        width: 100%; 
+    }
+    .buttons-container {
+        flex-direction: column; /* Stacks buttons vertically on smaller screens */
+        align-items: center; 
     }
 
-    .plot-twist-submission, .plot-twists {
-        margin-right: 0; /* Removes the right margin on smaller screens */
+    button, .edit-link {
+        width: 50%; 
+        margin-bottom: 5px; 
     }
 }
+

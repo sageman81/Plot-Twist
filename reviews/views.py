@@ -38,7 +38,7 @@ def detail(request, review_id):
 def logout_view(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     logout(request)
-    return redirect('login') 
+    return redirect('home')  # Redirect to the home page after logout
 
 def get_movie_data(title):
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'

@@ -14,10 +14,12 @@
             <a href="{% url 'reviews:index' %}">Reviews</a>
             <a href="{% url 'reviews:movie_search' %}">Movie Search</a> 
             <a href="{% url 'admin:index' %}">Admin</a>
-            <a href="{% url 'logout' %}">Logout</a>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: #61dafb; cursor: pointer; padding: 0; font: inherit;">Logout</button>
+            </form>
             <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'reviews:signup' %}">Sign Up</a>
-
         </nav>
     </header>
     <main>
@@ -35,4 +37,5 @@
     {% endif %}
 </body>
 </html>
+
 

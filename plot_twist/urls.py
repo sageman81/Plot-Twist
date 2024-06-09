@@ -18,6 +18,7 @@ from django.urls import include, path
 from django.contrib import admin
 from reviews.views import home, signup, login_view
 from reviews.views import upvote_plot_twist, downvote_plot_twist, edit_plot_twist, delete_plot_twist, movie_detail
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +32,6 @@ urlpatterns = [
     path('plot_twist/<int:movie_id>/<int:plot_twist_id>/edit/', edit_plot_twist, name='edit_plot_twist'),
     path('plot_twist/<int:movie_id>/<int:plot_twist_id>/delete/', delete_plot_twist, name='delete_plot_twist'),
     path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),
-
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
 ]
 

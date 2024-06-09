@@ -2,16 +2,18 @@
 
 {% block content %}
 <div class="movie-detail-container">
-    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="movie-poster">
+    <div class="movie-poster">
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" style="width: 100%;">
+    </div>
     <div class="movie-info">
         <h1>{{ movie.title }}</h1>
         <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
         <p><strong>Overview:</strong> {{ movie.overview }}</p>
-        <a href="{% url 'reviews:movie_search' %}" class="back-search">Back to Search</a>
+        <p><a href="{% url 'reviews:movie_search' %}" class="button">Back to Search</a></p>
     </div>
 </div>
 
-<div class="plot-twist-submission">
+<div class="container plot-twist-submission">
     <h2>Submit a Plot Twist</h2>
     <form method="post" class="plot-twist-form">
         {% csrf_token %}
@@ -20,7 +22,7 @@
     </form>
 </div>
 
-<div class="plot-twists">
+<div class="container plot-twists">
     <h2>Plot Twists</h2>
     {% for plot_twist in plot_twists %}
     <div class="plot-twist-card">
@@ -45,6 +47,7 @@
     <p>No plot twists have been submitted yet.</p>
     {% endfor %}
 </div>
+
 {% endblock %}
 
 
