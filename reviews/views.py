@@ -56,6 +56,29 @@ def get_movie_data(title):
         return None
 
 
+# def movie_detail(request, movie_id):
+#     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
+#     response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}')
+#     movie = response.json() if response.status_code == 200 else None
+
+#     if not movie:
+#         messages.error(request, 'Movie not found')
+#         return redirect('reviews:movie_search')
+
+#     plot_twists = PlotTwist.objects.filter(movie_id=movie_id).order_by('-votes')
+#     form = PlotTwistForm()
+
+#     if request.method == 'POST':
+#         form = PlotTwistForm(request.POST)
+#         if form.is_valid():
+#             plot_twist = form.save(commit=False)
+#             plot_twist.movie_id = movie_id
+#             plot_twist.user = request.user
+#             plot_twist.save()
+#             return redirect('reviews:movie_detail', movie_id=movie_id)
+
+#     return render(request, 'movie_detail.html', {'movie': movie, 'plot_twists': plot_twists, 'form': form})
+
 def movie_detail(request, movie_id):
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
     response = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}')
@@ -69,16 +92,22 @@ def movie_detail(request, movie_id):
     form = PlotTwistForm()
 
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, "Please log in to submit a plot twist.")
+            return redirect('login')
+        
         form = PlotTwistForm(request.POST)
         if form.is_valid():
             plot_twist = form.save(commit=False)
             plot_twist.movie_id = movie_id
             plot_twist.user = request.user
             plot_twist.save()
+            messages.success(request, "Plot twist submitted successfully.")
             return redirect('reviews:movie_detail', movie_id=movie_id)
+        else:
+            messages.error(request, "There was an error with your submission.")
 
     return render(request, 'movie_detail.html', {'movie': movie, 'plot_twists': plot_twists, 'form': form})
-
 
 
 
