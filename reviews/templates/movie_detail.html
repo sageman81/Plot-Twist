@@ -3,7 +3,7 @@
 {% block content %}
 <div class="movie-detail-container">
     <div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" style="width: 100%;">
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
     </div>
     <div class="movie-info">
         <h1>{{ movie.title }}</h1>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="container plot-twist-submission">
+<div class="plot-twist-submission-container">
     <h2>Submit a Plot Twist</h2>
     <form method="post" class="plot-twist-form">
         {% csrf_token %}
@@ -22,7 +22,7 @@
     </form>
 </div>
 
-<div class="container plot-twists">
+<div class="plot-twists-container">
     <h2>Plot Twists</h2>
     {% for plot_twist in plot_twists %}
     <div class="plot-twist-card">
@@ -49,7 +49,5 @@
 </div>
 
 {% endblock %}
-
-
 
 

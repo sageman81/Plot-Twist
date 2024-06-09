@@ -130,43 +130,51 @@ input[type="text"] {
     margin-top: 20px; /* Space above the movie info for clear separation */
 }
 
-/* Adjustments for form and buttons layout in the detail page */
-.plot-twist-submission, .plot-twists {
-    width: 100%; /* Full width to align with other elements */
-    text-align: center; /* Center the content for a clean look */
+/* Container styles for plot twist submission and viewing */
+.plot-twist-submission-container, .plot-twists-container {
+    width: 100%;
+    max-width: 800px; /* Consistent with the movie details container */
+    margin: 20px auto; /* Center and provide spacing from other content */
     padding: 20px;
-    margin-top: 20px; /* Space between sections */
+    background-color: #fff; /* Background color for visibility */
+    border-radius: 8px; /* Soften edges */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    text-align: center; /* Aligns text in the center */
 }
 
 .plot-twist-card {
-    background-color: #fff; /* White background for the cards */
-    border: 1px solid #ccc; /* Slight border for definition */
+    background-color: #f9f9f9; /* Lighter background for differentiation */
+    border: 1px solid #ddd; /* Slight border for definition */
     padding: 10px;
-    margin-bottom: 10px; /* Space between plot twist cards */
-    border-radius: 5px; /* Rounded corners for aesthetics */
+    margin-bottom: 10px; /* Space between cards */
+    border-radius: 5px; /* Consistent rounded corners */
 }
 
 .buttons-container {
     display: flex;
-    justify-content: space-around; /* Evenly space buttons within the container */
-    margin-top: 10px; /* Space above buttons */
+    justify-content: space-around; /* Distribute space around buttons evenly */
+    margin-top: 10px;
 }
 
 button, .edit-link {
-    background-color: #61dafb; /* Light blue background for buttons */
-    color: white; /* White text for contrast */
+    background-color: #61dafb; /* Light blue for a friendly look */
+    color: white;
     border: none;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
-    flex-grow: 1; /* Allow buttons to grow and fill the space */
+    text-decoration: none; /* Removes underline from links styled as buttons */
+    flex: 1; /* Each button takes equal space */
 }
 
 button:hover, .edit-link:hover {
-    background-color: #559abc; /* Darker shade on hover for visual feedback */
+    background-color: #559abc; /* A darker shade for hover effect */
 }
 
-
+/* Remove form labels for cleaner look */
+label {
+    display: none;
+}
 
 @media (max-width: 768px) {
     .buttons-container,
