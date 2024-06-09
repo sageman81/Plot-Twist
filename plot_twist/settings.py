@@ -32,6 +32,16 @@ SECRET_KEY = 'django-insecure-%n02x_qh(1aiegq3guoec0706v%a85a#1hjac@1wwv(#3e@44(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+
+# Security settings for production  NEW CODE ADDED
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+
+
 ALLOWED_HOSTS = ['https://plot-twist-se5y.onrender.com', 'localhost', '127.0.0.1:8000' ]
 
 
