@@ -3,7 +3,7 @@
 {% block content %}
 <div class="search-container">
     <h2>Search for a Movie</h2>
-    <form method="get" action="{% url 'reviews:movie_search' %}" style="justify-content: center;">
+    <form method="get" action="{% url 'reviews:movie_search' %}" class="search-form">
         <input type="text" name="query" placeholder="Enter movie title" autofocus>
         <button type="submit">Search</button>
         <a href="{% url 'reviews:random_movie' %}" class="button">Surprise Me!</a>
@@ -23,7 +23,8 @@
                 </li>
             {% endfor %}
         </ul>
-    {% elif popular_movies %}
+    {% endif %}
+    {% if popular_movies %}
         <h3>Popular Movies:</h3>
         <ul>
             {% for movie in popular_movies %}
@@ -38,5 +39,4 @@
     {% endif %}
 </div>
 {% endblock %}
-
 

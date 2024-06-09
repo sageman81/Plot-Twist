@@ -28,17 +28,23 @@ def index(request):
     reviews = Review.objects.all()
     return render(request, 'reviews/index.html', {'reviews': reviews, 'form': form})
 
+
+
 def detail(request, review_id):
     try:
         review = Review.objects.get(id=review_id)
         return render(request, 'reviews/detail.html', {'review': review})
     except Review.DoesNotExist:
         return HttpResponse("Review not found.", status=404)
+    
+
 
 def logout_view(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     logout(request)
     return redirect('home')  # Redirect to the home page after logout
+
+
 
 def get_movie_data(title):
     api_key = '3c051ccfcf4b5e91dc38ecca9b825464'
@@ -129,7 +135,7 @@ def get_top_rated_movies():
 
 
 def home(request):
-    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:8]
+    top_plot_twists = PlotTwist.objects.annotate(vote_count=Sum('votes')).order_by('-vote_count')[:12]
     print("Top plot twists:", [(pt.description, pt.vote_count) for pt in top_plot_twists])  # Debugging
     
     top_rated_movies = get_top_rated_movies()
