@@ -39,20 +39,48 @@ ul.messages li {
     border-radius: 5px;
 }
 
-.movie-container {
+
+.movies, .plot-twists {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.movies div, .plot-twists div {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
+    min-height: 300px; /* Ensures a minimum height for each grid item */
 }
 
-.movie-poster {
-    width: 200px; /* Adjust size accordingly */
+.movies img, .plot-twists img {
+    width: 100%; /* Full width of the grid column */
     height: auto;
-    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.movie-info {
+.movie-info, .plot-info {
     text-align: center;
-    margin: 10px;
+    padding: 10px 0;
+}
+
+.title {
+    height: 4em; /* Sets a fixed height for titles */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+    -webkit-box-orient: vertical;
+    margin-bottom: 5px;
+}
+
+/* Responsive adjustments for mobile screens */
+@media (max-width: 600px) {
+    .movies, .plot-twists {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    .movies div, .plot-twists div {
+        min-height: 250px;
+    }
 }
