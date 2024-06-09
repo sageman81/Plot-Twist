@@ -3,40 +3,39 @@
 {% block content %}
 <div class="search-container">
     <h2>Search for a Movie</h2>
-    <form method="get" action="{% url 'reviews:movie_search' %}" class="search-form">
+    <form method="get" action="{% url 'reviews:movie_search' %}">
         <input type="text" name="query" placeholder="Enter movie title" autofocus>
         <button type="submit">Search</button>
         <a href="{% url 'reviews:random_movie' %}" class="button">Surprise Me!</a>
     </form>
 </div>
 
-<div class="search-results">
+{% if movie_data %}
+    <h3>Results:</h3>
+{% else %}
+    <h3>Popular Movies:</h3>
+{% endif %}
+<div class="movies">
     {% if movie_data %}
-        <h3>Results:</h3>
-        <ul>
-            {% for movie in movie_data.results %}
-                <li>
-                    <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
-                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                        <div>{{ movie.title }}</div>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if popular_movies %}
-        <h3>Popular Movies:</h3>
-        <ul>
-            {% for movie in popular_movies %}
-                <li>
-                    <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
-                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
-                        <div>{{ movie.title }}</div>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for movie in movie_data.results %}
+            <div class="movie-block">
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                    <div>{{ movie.title }}</div>
+                </a>
+            </div>
+        {% endfor %}
+    {% elif popular_movies %}
+        {% for movie in popular_movies %}
+            <div class="movie-block">
+                <a href="{% url 'reviews:movie_detail' movie_id=movie.id %}">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} Poster">
+                    <div>{{ movie.title }}</div>
+                </a>
+            </div>
+        {% endfor %}
     {% endif %}
 </div>
 {% endblock %}
+
 

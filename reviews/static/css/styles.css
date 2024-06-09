@@ -106,6 +106,68 @@ input[type="text"] {
     text-align: center;
 }
 
+/* Movie Details Page Specific Styles */
+.movie-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;  /* Limit the max width */
+    margin: auto; /* Center the container on the page */
+    padding: 20px;
+    text-align: center; /* Center align text for consistent formatting */
+}
+
+.movie-poster img {
+    width: 100%; /* Full width of its container */
+    max-width: 300px; /* Limit how large the image can get */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for aesthetics */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+.movie-info {
+    text-align: left; /* Align text to the left within its container */
+    margin-top: 20px; /* Space above the movie info for clear separation */
+}
+
+/* Adjustments for form and buttons layout in the detail page */
+.plot-twist-submission, .plot-twists {
+    width: 100%; /* Full width to align with other elements */
+    text-align: center; /* Center the content for a clean look */
+    padding: 20px;
+    margin-top: 20px; /* Space between sections */
+}
+
+.plot-twist-card {
+    background-color: #fff; /* White background for the cards */
+    border: 1px solid #ccc; /* Slight border for definition */
+    padding: 10px;
+    margin-bottom: 10px; /* Space between plot twist cards */
+    border-radius: 5px; /* Rounded corners for aesthetics */
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-around; /* Evenly space buttons within the container */
+    margin-top: 10px; /* Space above buttons */
+}
+
+button, .edit-link {
+    background-color: #61dafb; /* Light blue background for buttons */
+    color: white; /* White text for contrast */
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    flex-grow: 1; /* Allow buttons to grow and fill the space */
+}
+
+button:hover, .edit-link:hover {
+    background-color: #559abc; /* Darker shade on hover for visual feedback */
+}
+
+
+
 @media (max-width: 768px) {
     .buttons-container,
     .movie-detail-container,
