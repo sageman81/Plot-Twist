@@ -6,7 +6,7 @@ body {
     color: #333;
 }
 
-header {
+header, footer {
     background-color: #20232a;
     color: #61dafb;
     padding: 10px 20px;
@@ -20,9 +20,6 @@ nav a {
 }
 
 footer {
-    text-align: center;
-    padding: 10px 0;
-    background-color: #20232a;
     color: white;
 }
 
@@ -39,48 +36,161 @@ ul.messages li {
     border-radius: 5px;
 }
 
-
+/* Grid layout for movies and plot twists */
 .movies, .plot-twists {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
+    justify-content: center;
     padding: 20px;
 }
 
 .movies div, .plot-twists div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 300px; /* Ensures a minimum height for each grid item */
+    text-align: center;
 }
 
 .movies img, .plot-twists img {
-    width: 100%; /* Full width of the grid column */
+    width: 100%;
     height: auto;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.movie-info, .plot-info {
+.container {
+    width: 100%; /* Full width of its parent */
+    max-width: 1200px; /* Maximum width */
+    margin: 0 auto; /* Centers the container */
+    padding: 20px; /* Padding inside the container */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: Adds shadow for depth */
+    background-color: #fff; /* Background color for content distinction */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.header-container,
+.content-container,
+.footer-container {
+    margin-bottom: 20px; /* Space between containers */
+}
+
+/* Base container for movie details, ensuring margin and padding for layout */
+.movie-details-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Styling for the movie poster and info to be side by side */
+.detail-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.movie-poster {
+    flex: 1;
+    max-width: 300px;  /* Limiting width for responsiveness */
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.movie-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-size: 14px; /* Smaller font size for details */
+}
+
+.movie-info p, .movie-info h1 {
+    margin-bottom: 10px;
+}
+
+.link-button {
+    background-color: #61dafb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    text-decoration: none;
     text-align: center;
-    padding: 10px 0;
+    display: inline-block;
+    cursor: pointer;
 }
 
-.title {
-    height: 4em; /* Sets a fixed height for titles */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Limits the text to 2 lines */
-    -webkit-box-orient: vertical;
-    margin-bottom: 5px;
+.link-button:hover {
+    background-color: #559abc;
 }
 
-/* Responsive adjustments for mobile screens */
-@media (max-width: 600px) {
-    .movies, .plot-twists {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+/* Layout for plot twist submission and existing twists */
+.twists-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.plot-twist-submission {
+    flex: 1;
+    margin-right: 20px; /* Space between submission form and list */
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.plot-twists {
+    flex: 2;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.plot-twist-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button, .edit-link {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+button:hover, .edit-link:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .detail-grid {
+        flex-direction: column;
     }
-    .movies div, .plot-twists div {
-        min-height: 250px;
+
+    .movie-info {
+        order: 2; /* Ensures the movie info appears below the poster on small screens */
+    }
+
+    .twists-container {
+        flex-direction: column;
+    }
+
+    .plot-twist-submission, .plot-twists {
+        margin-right: 0; /* Removes the right margin on smaller screens */
     }
 }
