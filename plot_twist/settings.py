@@ -19,7 +19,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgres://...')
+    'default': dj_database_url.config(default='postgres://plot_twist_data_user:evrW8FwZYudhUCndb4o1rjmt9eLrr3EW@dpg-cpj38gect0pc7383h5s0-a.ohio-postgres.render.com/plot_twist_data')
 }
 
 
