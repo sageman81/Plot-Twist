@@ -76,7 +76,7 @@ input[type="text"] {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 60%; /* Adjust width as necessary */
+    width: 60%; 
 }
 
 .search-results {
@@ -95,7 +95,7 @@ input[type="text"] {
 
 .search-results img {
     width: 100%;
-    max-width: 200px; /* Ensures images are not too large */
+    max-width: 200px; 
     height: auto;
     border-radius: 5px;
 }
@@ -111,43 +111,43 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 800px;  /* Limit the max width */
-    margin: auto; /* Center the container on the page */
+    max-width: 800px;  
+    margin: auto; 
     padding: 20px;
-    text-align: center; /* Center align text for consistent formatting */
+    text-align: center; 
 }
 
 .movie-poster img {
-    width: 100%; /* Full width of its container */
-    max-width: 300px; /* Limit how large the image can get */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Rounded corners for aesthetics */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    width: 100%; 
+    max-width: 300px; 
+    height: auto; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .movie-info {
-    text-align: left; /* Align text to the left within its container */
-    margin-top: 20px; /* Space above the movie info for clear separation */
+    text-align: left; 
+    margin-top: 20px; 
 }
 
-/* Container styles for plot twist submission and viewing */
+
 .plot-twist-submission-container, .plot-twists-container {
     width: 100%;
     max-width: 800px; /* Consistent with the movie details container */
-    margin: 20px auto; /* Center and provide spacing from other content */
+    margin: 20px auto; 
     padding: 20px;
-    background-color: #fff; /* Background color for visibility */
+    background-color: #fff; 
     border-radius: 8px; /* Soften edges */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    text-align: center; /* Aligns text in the center */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    text-align: center; 
 }
 
 .plot-twist-card {
-    background-color: #f9f9f9; /* Lighter background for differentiation */
-    border: 1px solid #ddd; /* Slight border for definition */
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd; 
     padding: 10px;
-    margin-bottom: 10px; /* Space between cards */
-    border-radius: 5px; /* Consistent rounded corners */
+    margin-bottom: 10px; 
+    border-radius: 5px; 
 }
 
 .buttons-container {
@@ -157,18 +157,18 @@ input[type="text"] {
 }
 
 button, .edit-link {
-    background-color: #61dafb; /* Light blue for a friendly look */
+    background-color: #61dafb; 
     color: white;
     border: none;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
-    text-decoration: none; /* Removes underline from links styled as buttons */
-    flex: 1; /* Each button takes equal space */
+    text-decoration: none; 
+    flex: 1; 
 }
 
 button:hover, .edit-link:hover {
-    background-color: #559abc; /* A darker shade for hover effect */
+    background-color: #559abc;
 }
 
 /* Remove form labels for cleaner look */
@@ -214,7 +214,7 @@ button:hover {
     }
 
     nav a, button {
-        width: 100%; /* Ensures full width on mobile for easier touch */
+        width: 100%;
         text-align: center;
     }
 }
