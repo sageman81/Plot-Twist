@@ -21,7 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASES = {
     'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
-
+if 'DATABASE_URL' not in os.environ:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'your_local_db_name'),
+        'USER': os.getenv('DB_USER', 'your_local_db_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'your_local_db_password'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
