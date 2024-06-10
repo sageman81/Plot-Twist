@@ -100,16 +100,7 @@ WSGI_APPLICATION = 'plot_twist.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PlotTwistDB',
-        'USER': 'sage1',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',  
-        'PORT': '5432',  
-    }
-}
+
 
 
 
