@@ -26,11 +26,11 @@ DATABASES = {
 if 'DATABASE_URL' not in os.environ:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'your_local_db_name'),
-        'USER': os.getenv('DB_USER', 'your_local_db_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'your_local_db_password'),
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 
 # Quick-start development settings - unsuitable for production
