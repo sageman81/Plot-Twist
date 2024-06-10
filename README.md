@@ -44,3 +44,8 @@ Plot Twist is a Django web application that allows users to explore and interact
 
 
 
+### Future Goals
+Plot twist will become more social in the future. Users can comment and debate movies and shows in a new environment on the app. Plot twist will also feature critcal reviews and trailers. 
+
+### Challenges 
+Connecting Plot Twist to a front end server was challengning and limited my options in implementing various features before deployment (main concerns were posts and fetches being blocked between the front and backend). 
