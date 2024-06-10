@@ -30,7 +30,7 @@ DATABASES = {
 SECRET_KEY = 'django-insecure-%n02x_qh(1aiegq3guoec0706v%a85a#1hjac@1wwv(#3e@44('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # Security settings for production  NEW CODE ADDED
@@ -42,7 +42,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 
 
 
-ALLOWED_HOSTS = ['https://plot-twist-se5y.onrender.com', 'localhost', '127.0.0.1:8000' ]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
