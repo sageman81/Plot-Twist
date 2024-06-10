@@ -12,7 +12,7 @@ class ReviewForm(forms.ModelForm):
 class PlotTwistForm(forms.ModelForm):
     class Meta:
         model = PlotTwist
-        fields = ['description', 'user']       
+        fields = ['description']       
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
